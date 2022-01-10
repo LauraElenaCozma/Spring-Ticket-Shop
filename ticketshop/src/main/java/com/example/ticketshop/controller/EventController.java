@@ -5,7 +5,6 @@ import com.example.ticketshop.dto.EventResponse;
 import com.example.ticketshop.mapper.EventMapper;
 import com.example.ticketshop.model.Event;
 import com.example.ticketshop.service.EventService;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -68,7 +67,7 @@ public class EventController {
     @PostMapping("/topEvents")
     public ResponseEntity<List<EventResponse>> getTop(@RequestParam Integer limit) {
         return ResponseEntity.ok()
-                .body(eventService.getTopEventBySoldTickets(limit).stream()
+                .body(eventService.getTopEventsBySoldTickets(limit).stream()
                         .map(eventMapper::toDtoResponse)
                         .collect(Collectors.toList()));
     }

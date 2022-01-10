@@ -42,13 +42,17 @@ public class EventService {
         return eventRepository.getAllEventsByMonthAndYear(month, year);
     }
 
-    public List<Event> getTopEventBySoldTickets(Integer lim) {
+    public List<Event> getTopEventsBySoldTickets(Integer lim) {
         List<Event> events = eventRepository.getTopEventBySoldTickets();
         return eventRepository.getTopEventBySoldTickets().stream().limit(lim).collect(Collectors.toList());
     }
 
     public Integer getNumberOfAvailableSeats(Long eventId) {
-        Event event = eventRepository.getById(eventId);
+        Optional<Event> optEvent = eventRepository.findById(eventId);
+        Event event = null;
+        if(optEvent.isPresent())
+            event = optEvent.get();
+        else throw new EventNotFoundException(eventId);
         return event.getVenue().getSeatCapacity() - eventRepository.getNumberOfSoldSeats(eventId);
     }
 }
