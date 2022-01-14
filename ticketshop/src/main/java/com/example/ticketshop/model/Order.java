@@ -30,8 +30,7 @@ public class Order {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<SeatReservation> seatReservations = new ArrayList<>();
+    private Integer numReservedSeats;
 
     private Date orderDate;
 

@@ -54,4 +54,12 @@ public class PlayController {
     public void deletePlay(@PathVariable Long id) {
         playService.deletePlay(id);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PlayResponse> updatePlay(@PathVariable Long id,
+                                                   @Valid
+                                                   @RequestBody PlayRequest playRequest) {
+        Play play = playService.updatePlay(id, playMapper.toEntity(playRequest));
+        return ResponseEntity.ok().body(playMapper.toDtoResponse(play));
+    }
 }

@@ -36,4 +36,18 @@ public class PlayService {
     public void deletePlay(Long id) {
         playRepository.deleteById(id);
     }
+
+    public Play updatePlay(Long id, Play playRequest) {
+        Optional<Play> play = playRepository.findById(id);
+        if(play.isEmpty())
+            throw new PlayNotFoundException(id);
+        Play newPlay = play.get();
+        newPlay.setName(playRequest.getName());
+        newPlay.setGenre(playRequest.getGenre());
+        newPlay.setAuthor(playRequest.getAuthor());
+        newPlay.setDirector(playRequest.getDirector());
+        newPlay.setDuration(playRequest.getDuration());
+        newPlay.setActors(playRequest.getActors());
+        return playRepository.save(newPlay);
+    }
 }

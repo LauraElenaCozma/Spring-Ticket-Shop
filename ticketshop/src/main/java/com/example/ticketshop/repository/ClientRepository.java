@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
@@ -30,4 +31,8 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     public List<Order> getAllOrdersByYearAndMonth(@Param("clientId") Long clientId,
                                                   @Param("year") Integer year,
                                                   @Param("month") Integer month);
+
+    public Optional<Client> findByEmail(String email);
+
+    public Optional<Client> findByPhoneNumber(String phone);
 }

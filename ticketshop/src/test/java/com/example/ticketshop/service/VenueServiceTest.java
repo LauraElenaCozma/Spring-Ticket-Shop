@@ -1,6 +1,7 @@
 package com.example.ticketshop.service;
 
 import com.example.ticketshop.exception.VenueNotFoundException;
+import com.example.ticketshop.model.Event;
 import com.example.ticketshop.model.Venue;
 import com.example.ticketshop.repository.VenueRepository;
 import org.junit.jupiter.api.Test;
@@ -94,5 +95,48 @@ public class VenueServiceTest {
         doNothing().when(venueRepository).deleteById(id);
         venueService.deleteVenue(id);
         verify(venueRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void updateVenueHappyFlow() {
+        Long id = 1L;
+        Venue newVenue = Venue.builder()
+                .id(id)
+                .venueName("Venue1")
+                .locationName("Location1")
+                .seatCapacity(101)
+                .events(null)
+                .build();
+        Venue oldVenue = Venue.builder()
+                .id(id)
+                .venueName("Venue2")
+                .locationName("Location2")
+                .seatCapacity(102)
+                .events(Arrays.asList(Event.builder().id(100L).build()))
+                .build();
+        Venue savedVenue = Venue.builder()
+                .id(id)
+                .venueName("Venue1")
+                .locationName("Location1")
+                .seatCapacity(101)
+                .events(Arrays.asList(Event.builder().id(100L).build()))
+                .build();
+        when(venueRepository.findById(id)).thenReturn(Optional.of(oldVenue));
+        when(venueRepository.save(savedVenue)).thenReturn(savedVenue);
+        Venue result = venueService.updateVenue(id, newVenue);
+        assertEquals(savedVenue.getVenueName(), result.getVenueName());
+        assertNotNull(result.getEvents());
+    }
+
+    @Test
+    void updateVenueNegativeFlow() {
+        Long id = 1L;
+        when(venueRepository.findById(id)).thenReturn(Optional.empty());
+        try {
+            venueService.updateVenue(id, Venue.builder().build());
+        } catch (VenueNotFoundException e) {
+            assertEquals("Venue with id " + id + " was not found", e.getMessage());
+        }
+
     }
 }

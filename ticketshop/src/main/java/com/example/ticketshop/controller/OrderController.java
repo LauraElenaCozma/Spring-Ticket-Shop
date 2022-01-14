@@ -50,6 +50,12 @@ public class OrderController {
                         .collect(Collectors.toList()));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<OrderResponse> updateReservedSeatsOfOrder(@PathVariable Long id,
+                                                                   @RequestBody Integer numReservedSeats) {
+        Order newOrder = orderService.updateReservedSeatsOfOrder(id, numReservedSeats);
+        return ResponseEntity.ok().body(orderMapper.toDtoRespose(newOrder));
+    }
     @DeleteMapping("/{id}")
     public void deleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);

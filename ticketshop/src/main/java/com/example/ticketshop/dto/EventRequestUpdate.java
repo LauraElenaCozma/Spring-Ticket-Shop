@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -16,11 +15,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventRequest {
-    @NotNull(message = "The play must not be null")
-    @ApiModelProperty(value = "playId", required = true, notes = "Play of the event", example = "1")
-    private Long playId;
-
+public class EventRequestUpdate {
     @NotNull(message = "The venue must not be null")
     @ApiModelProperty(value = "venueId", required = true, notes = "Venue of the event", example = "1")
     private Long venueId;

@@ -1,6 +1,7 @@
 package com.example.ticketshop.mapper;
 
 import com.example.ticketshop.dto.EventRequest;
+import com.example.ticketshop.dto.EventRequestUpdate;
 import com.example.ticketshop.dto.EventResponse;
 import com.example.ticketshop.model.Event;
 import com.example.ticketshop.model.Play;
@@ -25,7 +26,7 @@ public class EventMapper {
         this.venueMapper = venueMapper;
     }
 
-    public Event toEntity(EventRequest eventRequest) {
+    public Event eventRequestToEntity(EventRequest eventRequest) {
         Play returnedPlay = null;
         if(eventRequest.getPlayId() != null)
         returnedPlay = playService.getPlay(eventRequest.getPlayId());
@@ -40,6 +41,19 @@ public class EventMapper {
                 .price(eventRequest.getPrice())
                 .date(eventRequest.getDate())
                 .hour(eventRequest.getHour())
+                .build();
+    }
+
+    public Event eventRequestUpdateToEntity(EventRequestUpdate eventRequestUpdate) {
+        Venue returnedVenue = null;
+        if(eventRequestUpdate.getVenueId() != null)
+            returnedVenue = venueService.getVenue(eventRequestUpdate.getVenueId());
+
+        return Event.builder()
+                .venue(returnedVenue)
+                .price(eventRequestUpdate.getPrice())
+                .date(eventRequestUpdate.getDate())
+                .hour(eventRequestUpdate.getHour())
                 .build();
     }
 

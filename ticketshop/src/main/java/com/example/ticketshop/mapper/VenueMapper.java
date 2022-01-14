@@ -19,14 +19,6 @@ public class VenueMapper {
                 .build();
     }
 
-//    public VenueRequest toDtoRequest(Venue venue) {
-//        return VenueRequest.builder()
-//                .venueName(venue.getVenueName())
-//                .locationName(venue.getLocationName())
-//                .seatCapacity(venue.getSeatCapacity())
-//                .build();
-//    }
-
     public VenueResponse toDtoResponse(Venue venue) {
         List<Long> eventIds = new ArrayList<>();
         if (venue.getEvents() != null) {

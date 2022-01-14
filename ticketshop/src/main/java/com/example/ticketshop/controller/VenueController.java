@@ -5,6 +5,7 @@ import com.example.ticketshop.dto.VenueResponse;
 import com.example.ticketshop.mapper.VenueMapper;
 import com.example.ticketshop.model.Venue;
 import com.example.ticketshop.service.VenueService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -56,5 +57,13 @@ public class VenueController {
     @DeleteMapping("/{id}")
     public void deleteVenue(@PathVariable Long id) {
         venueService.deleteVenue(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<VenueResponse> updateVenue(@PathVariable Long id,
+                                                     @Valid
+                            @RequestBody VenueRequest venueRequest) {
+        Venue venue = venueService.updateVenue(id, venueMapper.toEntity(venueRequest));
+        return ResponseEntity.ok().body(venueMapper.toDtoResponse(venue));
     }
 }

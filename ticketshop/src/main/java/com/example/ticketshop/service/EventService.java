@@ -2,8 +2,8 @@ package com.example.ticketshop.service;
 
 import com.example.ticketshop.exception.EventNotFoundException;
 import com.example.ticketshop.model.Event;
+import com.example.ticketshop.model.Venue;
 import com.example.ticketshop.repository.EventRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,9 +13,10 @@ import java.util.stream.Collectors;
 @Service
 public class EventService {
     private final EventRepository eventRepository;
-
-    public EventService(EventRepository eventRepository) {
+    private final VenueService venueService;
+    public EventService(EventRepository eventRepository, VenueService venueService) {
         this.eventRepository = eventRepository;
+        this.venueService = venueService;
     }
 
     public Event createEvent(Event event) {
@@ -54,5 +55,18 @@ public class EventService {
             event = optEvent.get();
         else throw new EventNotFoundException(eventId);
         return event.getVenue().getSeatCapacity() - eventRepository.getNumberOfSoldSeats(eventId);
+    }
+
+    public Event updateEvent(Long id, Event eventRequest) {
+        Optional<Event> returnedEvent = eventRepository.findById(id);
+        if(returnedEvent.isEmpty())
+            throw new EventNotFoundException(id);
+
+        Event newEvent = returnedEvent.get();
+        newEvent.setVenue(eventRequest.getVenue());
+        newEvent.setPrice(eventRequest.getPrice());
+        newEvent.setDate(eventRequest.getDate());
+        newEvent.setHour(eventRequest.getHour());
+        return eventRepository.save(newEvent);
     }
 }

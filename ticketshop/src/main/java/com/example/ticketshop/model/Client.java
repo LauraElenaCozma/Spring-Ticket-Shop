@@ -28,10 +28,8 @@ public class Client {
 
     private String lastName;
 
-    @Column(unique = true)
     private String email;
 
-    @Column(unique = true)
     private String phoneNumber;
 
 

@@ -1,6 +1,7 @@
 package com.example.ticketshop.controller;
 
 import com.example.ticketshop.dto.EventRequest;
+import com.example.ticketshop.dto.EventRequestUpdate;
 import com.example.ticketshop.dto.EventResponse;
 import com.example.ticketshop.mapper.EventMapper;
 import com.example.ticketshop.model.Event;
@@ -30,7 +31,7 @@ public class EventController {
     public ResponseEntity<EventResponse> createEvent(
             @Valid
             @RequestBody EventRequest eventRequest) {
-        Event event = eventMapper.toEntity(eventRequest);
+        Event event = eventMapper.eventRequestToEntity(eventRequest);
         Event savedEvent = eventService.createEvent(event);
         return ResponseEntity.created(URI.create("/events/" + savedEvent.getId()))
                 .body(eventMapper.toDtoResponse(savedEvent));
@@ -72,9 +73,17 @@ public class EventController {
                         .collect(Collectors.toList()));
     }
 
-    @GetMapping("{id}/availableSeats")
+    @GetMapping("/{id}/availableSeats")
     public ResponseEntity<Integer> getNumberOfAvailableSeats(@PathVariable Long id) {
         Integer numAvailable = eventService.getNumberOfAvailableSeats(id);
         return ResponseEntity.ok().body(numAvailable);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EventResponse> updateEvent(@PathVariable Long id,
+                                                     @Valid
+                                                     @RequestBody EventRequestUpdate eventRequestUpdate) {
+        Event event = eventService.updateEvent(id, eventMapper.eventRequestUpdateToEntity(eventRequestUpdate));
+        return ResponseEntity.ok().body(eventMapper.toDtoResponse(event));
     }
 }

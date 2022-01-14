@@ -1,5 +1,6 @@
 package com.example.ticketshop.service;
 
+import com.example.ticketshop.dto.ActorRequest;
 import com.example.ticketshop.exception.ActorNotFoundException;
 import com.example.ticketshop.model.Actor;
 import com.example.ticketshop.repository.ActorRepository;
@@ -51,5 +52,17 @@ public class ActorService {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return (calendar.get(Calendar.YEAR)) == year;
+    }
+
+    public Actor updateActor(Long id, Actor actorRequest) {
+        Optional<Actor> actor = actorRepository.findById(id);
+        if(actor.isEmpty())
+            throw new ActorNotFoundException(id);
+        Actor newActor = actor.get();
+        newActor.setFirstName(actorRequest.getFirstName());
+        newActor.setLastName(actorRequest.getLastName());
+        newActor.setDateOfBirth(actorRequest.getDateOfBirth());
+        newActor.setPlaceOfBirth(actorRequest.getPlaceOfBirth());
+        return actorRepository.save(newActor);
     }
 }

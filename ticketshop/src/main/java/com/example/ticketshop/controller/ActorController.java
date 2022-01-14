@@ -5,6 +5,7 @@ import com.example.ticketshop.dto.ActorResponse;
 import com.example.ticketshop.mapper.ActorMapper;
 import com.example.ticketshop.model.Actor;
 import com.example.ticketshop.service.ActorService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -63,5 +64,13 @@ public class ActorController {
                 .body(actorService.getActiveActorsByYear(year).stream()
                         .map(actorMapper::toDtoResponse)
                         .collect(Collectors.toList()));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ActorResponse> updateActor(@PathVariable Long id,
+                                                     @Valid
+                                                     @RequestBody ActorRequest actorRequest) {
+        Actor actor = actorService.updateActor(id, actorMapper.toEntity(actorRequest));
+        return ResponseEntity.ok().body(actorMapper.toDtoResponse(actor));
     }
 }

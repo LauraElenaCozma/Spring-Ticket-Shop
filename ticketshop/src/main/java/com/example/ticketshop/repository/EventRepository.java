@@ -17,14 +17,12 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query("SELECT ev FROM Event ev " +
             "JOIN Order o ON o.event.id = ev.id " +
-            "JOIN SeatReservation seat ON seat.order.id = o.id " +
             "GROUP BY ev.id " +
-            "ORDER BY COUNT(seat.id) DESC")
+            "ORDER BY SUM(o.numReservedSeats) DESC")
     List<Event> getTopEventBySoldTickets();
 
-    @Query("SELECT COUNT(seat.id) FROM Event e " +
+    @Query("SELECT SUM(o.numReservedSeats) FROM Event e " +
             "JOIN Order o ON o.event.id = e.id " +
-            "JOIN SeatReservation seat ON seat.order.id = o.id " +
             "WHERE e.id = :eventId")
     Integer getNumberOfSoldSeats(@Param("eventId") Long eventId);
 }

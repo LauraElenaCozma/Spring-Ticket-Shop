@@ -42,6 +42,42 @@ public class PlayServiceTest {
     }
 
     @Test
+    void updatePlayHappyFlow() {
+        Long id = 1L;
+        Play newPlay = Play.builder()
+                .id(id)
+                .name("Play1")
+                .genre(Genre.COMEDY)
+                .build();
+        Play oldPlay = Play.builder()
+                .id(id)
+                .name("Play2")
+                .genre(Genre.DRAMA)
+                .build();
+        when(playRepository.findById(id)).thenReturn(Optional.of(oldPlay));
+        when(playRepository.save(newPlay)).thenReturn(newPlay);
+        Play result = playService.updatePlay(id, newPlay);
+        assertEquals(newPlay.getName(), result.getName());
+    }
+
+    @Test
+    void updatePlayNegativeFlow() {
+        Long id = 1L;
+        Play newPlay = Play.builder()
+                .id(id)
+                .name("Play1")
+                .genre(Genre.COMEDY)
+                .build();
+        when(playRepository.findById(id)).thenReturn(Optional.empty());
+        try {
+            playService.updatePlay(id, newPlay);
+        } catch (PlayNotFoundException e) {
+            assertEquals("Play with id " + id + " was not found", e.getMessage());
+            verify(playRepository, never()).save(newPlay);
+        }
+    }
+
+    @Test
     void getPlaysHappyFlow() {
         Play play1 = Play.builder()
                 .name("Name 1")

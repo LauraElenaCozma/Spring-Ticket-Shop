@@ -2,7 +2,6 @@ package com.example.ticketshop.mapper;
 
 import com.example.ticketshop.dto.OrderRequest;
 import com.example.ticketshop.dto.OrderResponse;
-import com.example.ticketshop.dto.SeatReservationResponse;
 import com.example.ticketshop.model.Client;
 import com.example.ticketshop.model.Event;
 import com.example.ticketshop.model.Order;
@@ -19,12 +18,10 @@ import java.util.stream.Collectors;
 public class OrderMapper {
     private final EventService eventService;
     private final ClientService clientService;
-    private final ReservationMapper reservationMapper;
 
-    public OrderMapper(EventService eventService, ClientService clientService, ReservationMapper reservationMapper) {
+    public OrderMapper(EventService eventService, ClientService clientService) {
         this.eventService = eventService;
         this.clientService = clientService;
-        this.reservationMapper = reservationMapper;
     }
 
     public Order toEntity(OrderRequest orderRequest) {
@@ -38,6 +35,7 @@ public class OrderMapper {
                 .event(event)
                 .client(client)
                 .orderDate(new Date())
+                .numReservedSeats(orderRequest.getNumReservedSeats())
                 .build();
     }
 
@@ -50,16 +48,11 @@ public class OrderMapper {
         if(order.getClient() != null)
             idClient = order.getClient().getId();
 
-        List<SeatReservationResponse> seats = new ArrayList<>();
-        if(order.getSeatReservations() != null)
-            seats = order.getSeatReservations().stream()
-                    .map(reservationMapper::toDtoResponse)
-                    .collect(Collectors.toList());
         return OrderResponse.builder()
                 .id(order.getId())
                 .eventId(idEvent)
                 .clientId(idClient)
-                .seatReservations(seats)
+                .numReservedSeats(order.getNumReservedSeats())
                 .orderDate(order.getOrderDate())
                 .build();
     }

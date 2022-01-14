@@ -1,7 +1,9 @@
 package com.example.ticketshop.exception.advice;
 
+import com.example.ticketshop.exception.EmailNotUniqueException;
 import com.example.ticketshop.exception.NotAvailableSeatsException;
 import com.example.ticketshop.exception.NotFoundException;
+import com.example.ticketshop.exception.PhoneNotUniqueException;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({EmptyResultDataAccessException.class})
     public ResponseEntity<String> handleNotFound(EmptyResultDataAccessException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(exception.getMessage() + " at " + LocalDateTime.now());
+    }
+
+    @ExceptionHandler({PhoneNotUniqueException.class, EmailNotUniqueException.class})
+    public ResponseEntity<String> handleNotUnique(Exception exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(exception.getMessage() + " at " + LocalDateTime.now());
     }
 

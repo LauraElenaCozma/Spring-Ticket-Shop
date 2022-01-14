@@ -2,6 +2,7 @@ package com.example.ticketshop.service;
 
 import com.example.ticketshop.exception.EventNotFoundException;
 import com.example.ticketshop.model.Event;
+import com.example.ticketshop.model.Play;
 import com.example.ticketshop.model.Venue;
 import com.example.ticketshop.repository.EventRepository;
 import org.junit.jupiter.api.Test;
@@ -162,5 +163,45 @@ public class EventServiceTest {
             verify(eventRepository, times(0)).getNumberOfSoldSeats(eventId);
             assertEquals(expected, e.getMessage());
         }
+    }
+
+    @Test
+    void updateEventNotFound() {
+        Long id = 1L;
+        when(eventRepository.findById(id)).thenReturn(Optional.empty());
+        try {
+            eventService.updateEvent(id, Event.builder().build());
+        } catch (EventNotFoundException e) {
+            assertEquals("Event with id " + id + " was not found", e.getMessage());
+            verify(eventRepository, never()).save(Event.builder().build());
+        }
+    }
+
+    @Test
+    void updateEventHappyFlow() {
+        Long id = 1L;
+        Event newEvent = Event.builder()
+                .id(1L)
+                .price(101D)
+                .hour("20:30")
+                .play(null)
+                .build();
+        Event oldEvent = Event.builder()
+                .id(1L)
+                .price(102D)
+                .hour("20:40")
+                .play(Play.builder().name("Play").build())
+                .build();
+        Event savedEvent = Event.builder()
+                .id(1L)
+                .price(101D)
+                .hour("20:30")
+                .play(Play.builder().name("Play").build())
+                .build();
+        when(eventRepository.findById(id)).thenReturn(Optional.of(oldEvent));
+        when(eventRepository.save(savedEvent)).thenReturn(savedEvent);
+        Event result = eventService.updateEvent(id, newEvent);
+        assertEquals(savedEvent.getPrice(), result.getPrice());
+        assertNotNull(result.getPlay());
     }
 }

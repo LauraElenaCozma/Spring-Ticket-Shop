@@ -38,4 +38,14 @@ public class VenueService {
     }
 
 
+    public Venue updateVenue(Long id, Venue venueRequest) {
+        Optional<Venue> venue = venueRepository.findById(id);
+        if(venue.isEmpty())
+            throw new VenueNotFoundException(id);
+        Venue newVenue = venue.get();
+        newVenue.setVenueName(venueRequest.getVenueName());
+        newVenue.setLocationName(venueRequest.getLocationName());
+        newVenue.setSeatCapacity(venueRequest.getSeatCapacity());
+        return venueRepository.save(newVenue);
+    }
 }

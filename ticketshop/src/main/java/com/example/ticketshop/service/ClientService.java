@@ -1,6 +1,8 @@
 package com.example.ticketshop.service;
 
 import com.example.ticketshop.exception.ClientNotFoundException;
+import com.example.ticketshop.exception.EmailNotUniqueException;
+import com.example.ticketshop.exception.PhoneNotUniqueException;
 import com.example.ticketshop.model.Client;
 import com.example.ticketshop.model.Order;
 import com.example.ticketshop.repository.ClientRepository;
@@ -44,6 +46,9 @@ public class ClientService {
     }
 
     public List<Order> getOrdersOfClientByYearOrMonth(Long id, Integer year, Integer month) {
+        Optional<Client> client = clientRepository.findById(id);
+        if(client.isEmpty())
+            throw new ClientNotFoundException(id);
         if (year == null && month == null) {
             return getOrdersOfClient(id);
         } else if (month == null) {
@@ -52,5 +57,34 @@ public class ClientService {
             return clientRepository.getAllOrdersByMonth(id, month);
         }
         return clientRepository.getAllOrdersByYearAndMonth(id, year, month);
+    }
+
+    public Client updateClient(Long id, Client client) {
+        Optional<Client> returnedClient = clientRepository.findById(id);
+        if(returnedClient.isEmpty())
+            throw new ClientNotFoundException(id);
+        if(!returnedClient.get().getEmail().equals(client.getEmail())) // the email will be updated
+            checkUniqueEmail(client.getEmail());
+        if(!returnedClient.get().getPhoneNumber().equals(client.getPhoneNumber())) // the phone number will be updated
+            checkUniquePhoneNumber(client.getPhoneNumber());
+
+        Client newClient = returnedClient.get();
+        newClient.setFirstName(client.getFirstName());
+        newClient.setLastName(client.getLastName());
+        newClient.setEmail(client.getEmail());
+        newClient.setPhoneNumber(client.getPhoneNumber());
+        return clientRepository.save(newClient);
+    }
+
+    private void checkUniqueEmail(String email) {
+        Optional<Client> client = clientRepository.findByEmail(email);
+        if(client.isPresent())
+            throw new EmailNotUniqueException(email);
+    }
+
+    private void checkUniquePhoneNumber(String phone) {
+        Optional<Client> client = clientRepository.findByPhoneNumber(phone);
+        if(client.isPresent())
+            throw new PhoneNotUniqueException(phone);
     }
 }

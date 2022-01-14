@@ -70,6 +70,14 @@ public class ClientController {
         clientService.deleteClient(id);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientResponse> updateClient(@PathVariable Long id,
+                                                       @Valid
+                                                       @RequestBody ClientRequest clientRequest) {
+        Client client = clientService.updateClient(id, clientMapper.toEntity(clientRequest));
+        return ResponseEntity.ok().body(clientMapper.toDtoResponse(client));
+
+    }
     @GetMapping("/{id}/orders")
     public ResponseEntity<List<OrderResponse>> getOrderOfClientByYearOrMonth(@PathVariable Long id,
                                                                 @RequestParam(required = false) Integer year,
