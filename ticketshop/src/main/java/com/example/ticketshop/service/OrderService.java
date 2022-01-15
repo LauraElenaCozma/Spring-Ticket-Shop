@@ -67,7 +67,7 @@ public class OrderService {
         Order savedOrder = order.get();
         Long eventId = savedOrder.getEvent().getId();
         Integer numAvailable = eventService.getNumberOfAvailableSeats(eventId);
-        if (numAvailable - numReservedSeats < 0)
+        if (numAvailable + savedOrder.getNumReservedSeats() - numReservedSeats < 0)
             throw new NotAvailableSeatsException();
         savedOrder.setNumReservedSeats(numReservedSeats);
         return orderRepository.save(savedOrder);

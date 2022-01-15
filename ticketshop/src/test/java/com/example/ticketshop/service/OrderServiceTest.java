@@ -227,9 +227,9 @@ public class OrderServiceTest {
     @Test
     void updateReservedSeatsNotAvailableSeats() {
         Long orderId = 1L;
-        Integer numReservedSeats = 9;
+        Integer numReservedSeats = 11;
         Long eventId = 1L;
-        Integer emptySeats = 8;
+        Integer emptySeats = 3;
         Order oldOrder = Order.builder()
                 .client(Client.builder().firstName("Name").build())
                 .event(Event.builder()

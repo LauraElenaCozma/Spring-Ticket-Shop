@@ -30,7 +30,7 @@ public class Event {
     @JoinColumn(name = "venue_id")
     private Venue venue;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
     private Double price;

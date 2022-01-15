@@ -21,7 +21,10 @@ public class Actor {
     @Column(name = "actor_id")
     private Long id;
 
-    @ManyToMany(mappedBy = "actors")
+    @ManyToMany
+    @JoinTable(name = "plays_actors",
+            joinColumns = @JoinColumn(name = "actor_id"),
+            inverseJoinColumns = @JoinColumn(name = "play_id"))
     private List<Play> plays;
 
     private String firstName;

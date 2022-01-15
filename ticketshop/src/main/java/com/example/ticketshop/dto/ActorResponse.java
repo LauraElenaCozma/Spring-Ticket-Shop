@@ -1,5 +1,7 @@
 package com.example.ticketshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,6 +16,7 @@ public class ActorResponse {
 
     private String lastName;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateOfBirth;
 
     private String placeOfBirth;

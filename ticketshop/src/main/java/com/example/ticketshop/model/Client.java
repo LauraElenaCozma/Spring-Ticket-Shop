@@ -21,7 +21,7 @@ public class Client {
     @Column(name = "client_id")
     private Long id;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
     private String firstName;

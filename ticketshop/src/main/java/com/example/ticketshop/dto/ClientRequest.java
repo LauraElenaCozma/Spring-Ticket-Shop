@@ -33,6 +33,6 @@ public class ClientRequest {
 
     @Pattern(regexp = PHONE_REGEX, message = "Invalid phone number")
     @Column(unique = true)
-    @ApiModelProperty(value = "phoneNumber", required = false, notes = "Phone number of the client", example = "0751178283")
+//    @ApiModelProperty(value = "phoneNumber", required = false, notes = "Phone number of the client", example = "0751178283")
     private String phoneNumber;
 }
