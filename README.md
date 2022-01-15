@@ -26,6 +26,7 @@
 - REST features for all the features defined earlier
 - Unit test for the service package with coverage 98% and some integration tests
 - The project was documented using Swagger, at `http://localhost:8080/swagger-ui`
+- `@ControllerAdvice` for exception handling
 
 ## Swagger interface:
 ![Swagger interface](https://github.com/LauraElenaCozma/Spring-Ticket-Shop/blob/main/ticketshop/Swagger.JPG)
