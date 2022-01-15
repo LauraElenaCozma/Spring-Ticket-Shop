@@ -17,7 +17,7 @@
 - Delete for entities
 
 ## The schema of the database is:
-![Online ticket shop schema](/path/to/image.png)
+![Online ticket shop schema](https://github.com/LauraElenaCozma/Spring-Ticket-Shop/blob/main/ticketshop/database_schema.png)
 
 ## Spring Boot features:
 - Beans defined for the services, repositories, controller, etc.
@@ -27,3 +27,5 @@
 - Unit test for the service package with coverage 98% and some integration tests
 - The project was documented using Swagger, at `http://localhost:8080/swagger-ui`
 
+## Swagger interface:
+![Swagger interface](https://github.com/LauraElenaCozma/Spring-Ticket-Shop/blob/main/ticketshop/Swagger.JPG)
