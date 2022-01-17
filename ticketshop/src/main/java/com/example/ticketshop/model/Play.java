@@ -20,7 +20,9 @@ public class Play {
     @Column(name = "play_id")
     private Long id;
 
-    @OneToMany(mappedBy = "play", cascade = CascadeType.REMOVE, orphanRemoval = true)
+
+
+    @OneToMany(mappedBy = "play", cascade = CascadeType.ALL)
     private List<Event> events = new ArrayList<>();
 
     @ManyToMany

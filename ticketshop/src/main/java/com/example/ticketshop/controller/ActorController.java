@@ -5,7 +5,6 @@ import com.example.ticketshop.dto.ActorResponse;
 import com.example.ticketshop.mapper.ActorMapper;
 import com.example.ticketshop.model.Actor;
 import com.example.ticketshop.service.ActorService;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +58,7 @@ public class ActorController {
     }
 
     @GetMapping("/activeActors")
-    public ResponseEntity<List<ActorResponse>> getActiveActorsByMonth(@RequestParam Integer year) {
+    public ResponseEntity<List<ActorResponse>> getActiveActorsByYear(@RequestParam Integer year) {
         return ResponseEntity.ok()
                 .body(actorService.getActiveActorsByYear(year).stream()
                         .map(actorMapper::toDtoResponse)

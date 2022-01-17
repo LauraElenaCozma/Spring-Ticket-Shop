@@ -1,5 +1,6 @@
 package com.example.ticketshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,5 +18,6 @@ public class OrderResponse {
 
     private Integer numReservedSeats;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date orderDate;
 }

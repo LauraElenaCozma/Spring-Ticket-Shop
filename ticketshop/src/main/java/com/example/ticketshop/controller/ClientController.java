@@ -12,6 +12,7 @@ import com.example.ticketshop.model.Order;
 import com.example.ticketshop.model.Play;
 import com.example.ticketshop.service.ClientService;
 import com.example.ticketshop.service.OrderService;
+import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/clients")
 @Validated
+@Api(value = "/clients")
 public class ClientController {
 
     public final ClientService clientService;
@@ -78,10 +80,11 @@ public class ClientController {
         return ResponseEntity.ok().body(clientMapper.toDtoResponse(client));
 
     }
+
     @GetMapping("/{id}/orders")
     public ResponseEntity<List<OrderResponse>> getOrderOfClientByYearOrMonth(@PathVariable Long id,
-                                                                @RequestParam(required = false) Integer year,
-                                                                @RequestParam(required = false) Integer month) {
+                                                                             @RequestParam(required = false) Integer year,
+                                                                             @RequestParam(required = false) Integer month) {
         List<OrderResponse> orders = clientService.getOrdersOfClientByYearOrMonth(id, year, month).stream()
                 .map(orderMapper::toDtoRespose)
                 .collect(Collectors.toList());
@@ -93,7 +96,7 @@ public class ClientController {
     public ResponseEntity<List<PlayResponse>> getPlaysOfClient(@PathVariable Long id) {
         List<Order> orders = clientService.getOrdersOfClient(id);
         List<Play> plays = new ArrayList<>();
-        for(Order ord : orders) {
+        for (Order ord : orders) {
             Play play = orderService.getPlayOfOrder(ord.getId());
             plays.add(play);
         }

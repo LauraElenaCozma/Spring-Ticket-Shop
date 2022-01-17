@@ -21,7 +21,7 @@ public class Venue {
     @Column(name = "venue_id")
     private Long id;
 
-    @OneToMany(mappedBy = "venue", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL)
     private List<Event> events = new ArrayList<>();
 
     private String venueName;

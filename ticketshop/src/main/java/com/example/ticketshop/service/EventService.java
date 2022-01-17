@@ -50,11 +50,13 @@ public class EventService {
 
     public Integer getNumberOfAvailableSeats(Long eventId) {
         Optional<Event> optEvent = eventRepository.findById(eventId);
-        Event event = null;
-        if(optEvent.isPresent())
-            event = optEvent.get();
-        else throw new EventNotFoundException(eventId);
-        return event.getVenue().getSeatCapacity() - eventRepository.getNumberOfSoldSeats(eventId);
+        if(optEvent.isEmpty())
+            throw new EventNotFoundException(eventId);
+        Event event = optEvent.get();
+        Integer numSoldSeats = eventRepository.getNumberOfSoldSeats(eventId);
+        if(numSoldSeats == null)
+            numSoldSeats = 0;
+        return event.getVenue().getSeatCapacity() - numSoldSeats;
     }
 
     public Event updateEvent(Long id, Event eventRequest) {

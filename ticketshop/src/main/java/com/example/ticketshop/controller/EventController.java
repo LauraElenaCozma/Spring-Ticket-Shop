@@ -56,7 +56,7 @@ public class EventController {
         eventService.deleteEvent(id);
     }
 
-    @PostMapping("/filter")
+    @GetMapping("/filter")
     public ResponseEntity<List<EventResponse>> getAllEventsByMonthAndYear(@RequestParam Integer month,
                                                                           @RequestParam Integer year) {
         return ResponseEntity.ok()
@@ -65,7 +65,7 @@ public class EventController {
                         .collect(Collectors.toList()));
     }
 
-    @PostMapping("/topEvents")
+    @GetMapping("/topEvents")
     public ResponseEntity<List<EventResponse>> getTop(@RequestParam Integer limit) {
         return ResponseEntity.ok()
                 .body(eventService.getTopEventsBySoldTickets(limit).stream()
