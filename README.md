@@ -1,6 +1,6 @@
 # Online Ticket Shop
 
-## REST services for an online store with tickets for plays, using Spring Boot.
+## REST services for an online store with tickets for plays, using Spring Boot framework.
 
 ## Features:
 - Get top events by sold tickets
@@ -16,15 +16,18 @@
 - Update for all entities
 - Delete for entities
 
-## The schema of the database is:
+## The ERD Diagram:
+![Online ticket shop ERD Diagram](https://github.com/LauraElenaCozma/Spring-Ticket-Shop/blob/main/ticketshop/erd_diagram.JPG)
+
+## And a more simplified version of the schema is:
 ![Online ticket shop schema](https://github.com/LauraElenaCozma/Spring-Ticket-Shop/blob/main/ticketshop/database_schema.png)
 
 ## Spring Boot features:
 - Beans defined for the services, repositories, controller, etc.
 - DTO classes and object mappers
 - Validation for classes 
-- REST features for all the features defined earlier
-- Unit test for the service package with coverage 98% and some integration tests
+- REST services for all the features defined earlier
+- Unit test using Mockito for the service package with coverage 98% and some integration tests
 - The project was documented using Swagger, at `http://localhost:8080/swagger-ui`
 - `@ControllerAdvice` for exception handling
 
