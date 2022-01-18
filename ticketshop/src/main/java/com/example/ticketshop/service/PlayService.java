@@ -29,7 +29,9 @@ public class PlayService {
     }
 
 
-    public List<Play> getPlays() {
+    public List<Play> getPlaysFilterName(String name) {
+        if(name != null && !name.isEmpty())
+            return playRepository.findByName(name);
         return playRepository.findAll();
     }
 

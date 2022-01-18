@@ -8,4 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PlayRepository extends JpaRepository<Play, Long> {
+    List<Play> findByName(String name);
 }

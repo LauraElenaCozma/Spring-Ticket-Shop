@@ -16,6 +16,14 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                            @Param("year") Integer year);
 
     @Query("SELECT ev FROM Event ev " +
+            "WHERE MONTH(ev.date) = :month")
+    List<Event> getAllEventsByMonth(@Param("month") Integer month);
+
+    @Query("SELECT ev FROM Event ev " +
+            "WHERE YEAR(ev.date) = :year")
+    List<Event> getAllEventsByYear(@Param("year") Integer year);
+
+    @Query("SELECT ev FROM Event ev " +
             "JOIN Order o ON o.event.id = ev.id " +
             "GROUP BY ev.id " +
             "ORDER BY SUM(o.numReservedSeats) DESC")
@@ -25,4 +33,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "JOIN Event e ON o.event.id = e.id " +
             "WHERE e.id = :eventId")
     Integer getNumberOfSoldSeats(@Param("eventId") Long eventId);
+
 }

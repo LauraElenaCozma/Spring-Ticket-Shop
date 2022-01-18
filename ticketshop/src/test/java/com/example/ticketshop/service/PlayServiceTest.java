@@ -78,7 +78,8 @@ public class PlayServiceTest {
     }
 
     @Test
-    void getPlaysHappyFlow() {
+    void getPlaysNoFilterHappyFlow() {
+        String name = null;
         Play play1 = Play.builder()
                 .name("Name 1")
                 .author("Author 1")
@@ -94,11 +95,36 @@ public class PlayServiceTest {
                 .genre(Genre.DRAMA)
                 .build();
         when(playRepository.findAll()).thenReturn(Arrays.asList(play1, play2));
-        List<Play> plays = playService.getPlays();
+        List<Play> plays = playService.getPlaysFilterName(name);
         assertEquals(play1.getName(), plays.get(0).getName());
         assertEquals(play1.getDirector(), plays.get(0).getDirector());
         assertEquals(play2.getName(), plays.get(1).getName());
         assertEquals(play2.getDirector(), plays.get(1).getDirector());
+    }
+
+    @Test
+    void getPlaysFilterNameHappyFlow() {
+        String name = "Name 1";
+        Play play1 = Play.builder()
+                .name("Name 1")
+                .author("Author 1")
+                .director("Director 1")
+                .duration(101D)
+                .genre(Genre.TRAGEDY)
+                .build();
+        Play play2 = Play.builder()
+                .name("Name 2")
+                .author("Author 2")
+                .director("Director 2")
+                .duration(102D)
+                .genre(Genre.DRAMA)
+                .build();
+        when(playRepository.findByName(name)).thenReturn(Arrays.asList(play1));
+        List<Play> plays = playService.getPlaysFilterName(name);
+        assertEquals(1, plays.size());
+        verify(playRepository, never()).findAll();
+        assertEquals(play1.getName(), plays.get(0).getName());
+        assertEquals(play1.getDirector(), plays.get(0).getDirector());
     }
 
     @Test

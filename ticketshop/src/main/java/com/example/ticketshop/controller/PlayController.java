@@ -43,8 +43,8 @@ public class PlayController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PlayResponse>> getPlays() {
-        List<PlayResponse> plays = playService.getPlays().stream()
+    public ResponseEntity<List<PlayResponse>> getPlays(@RequestParam(required = false) String name) {
+        List<PlayResponse> plays = playService.getPlaysFilterName(name).stream()
                 .map(playMapper::toDtoResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok().body(plays);

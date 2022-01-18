@@ -40,7 +40,15 @@ public class EventService {
 
     public List<Event> getAllEventsByMonthAndYear(Integer month,
                                                     Integer year) {
-        return eventRepository.getAllEventsByMonthAndYear(month, year);
+        if(month != null) {
+            if(year != null)
+                return eventRepository.getAllEventsByMonthAndYear(month, year);
+            else return eventRepository.getAllEventsByMonth(month);
+        } else {
+            if(year != null)
+                return eventRepository.getAllEventsByYear(year);
+            else return eventRepository.findAll();
+        }
     }
 
     public List<Event> getTopEventsBySoldTickets(Integer lim) {

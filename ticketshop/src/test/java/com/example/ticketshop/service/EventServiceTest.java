@@ -54,7 +54,7 @@ public class EventServiceTest {
                 .hour("20:40")
                 .build();
         when(eventRepository.findAll()).thenReturn(Arrays.asList(event1, event2));
-        List<Event> events = eventService.getAllEvents();
+        List<Event> events = eventService.getAllEventsByMonthAndYear(null, null);
         assertEquals(event1.getPrice(), events.get(0).getPrice());
         assertEquals(event2.getPrice(), events.get(1).getPrice());
     }
@@ -152,6 +152,23 @@ public class EventServiceTest {
         assertEquals(expectedAvailable, result);
     }
 
+    @Test
+    void getNumberOfAvailableSeatsReturnsNull() {
+        Long eventId = 1L;
+        Integer capacity = 100;
+        Event event = Event.builder()
+                .id(eventId)
+                .price(100D)
+                .hour("20:30")
+                .venue(Venue.builder()
+                        .seatCapacity(capacity)
+                        .build())
+                .build();
+        when(eventRepository.findById(eventId)).thenReturn(Optional.of(event));
+        when(eventRepository.getNumberOfSoldSeats(eventId)).thenReturn(null);
+        Integer result = eventService.getNumberOfAvailableSeats(eventId);
+        assertEquals(capacity, result);
+    }
     @Test
     void getNumberOfAvailableSeatsNegativeFlow() {
         Long eventId = 1L;

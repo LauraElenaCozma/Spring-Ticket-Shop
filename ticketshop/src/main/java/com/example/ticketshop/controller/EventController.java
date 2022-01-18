@@ -42,13 +42,14 @@ public class EventController {
         Event event = eventService.getEvent(id);
         return ResponseEntity.ok().body(eventMapper.toDtoResponse(event));
     }
-
+    
     @GetMapping
-    public ResponseEntity<List<EventResponse>> getAllEvents() {
-        List<EventResponse> events = eventService.getAllEvents().stream()
-                .map(eventMapper::toDtoResponse)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok().body(events);
+    public ResponseEntity<List<EventResponse>> getAllEventsByMonthAndYear(@RequestParam(required = false) Integer month,
+                                                                          @RequestParam(required = false) Integer year) {
+        return ResponseEntity.ok()
+                .body(eventService.getAllEventsByMonthAndYear(month, year).stream()
+                        .map(eventMapper::toDtoResponse)
+                        .collect(Collectors.toList()));
     }
 
     @DeleteMapping("/{id}")
@@ -56,14 +57,6 @@ public class EventController {
         eventService.deleteEvent(id);
     }
 
-    @GetMapping("/filter")
-    public ResponseEntity<List<EventResponse>> getAllEventsByMonthAndYear(@RequestParam Integer month,
-                                                                          @RequestParam Integer year) {
-        return ResponseEntity.ok()
-                .body(eventService.getAllEventsByMonthAndYear(month, year).stream()
-                        .map(eventMapper::toDtoResponse)
-                        .collect(Collectors.toList()));
-    }
 
     @GetMapping("/topEvents")
     public ResponseEntity<List<EventResponse>> getTop(@RequestParam Integer limit) {
